@@ -1,5 +1,5 @@
 import collections
-import multiprocessing
+import concurrent.futures
 import os
 import time
 from pprint import pprint
@@ -34,8 +34,8 @@ if __name__ =='__main__':
 
     start_time = time.time()
 
-    pool = multiprocessing.Pool(processes=7, maxtasksperchild=1)
-    scientist_ages = pool.map(transform, scientist)
+    with concurrent.futures.ProcessPoolExecutor() as ex:
+        scientist_ages = tuple(ex.map(transform, scientist))
 
     # First try it without multiprocessing(uncoment bellow, comment above)
     # scientist_ages = tuple(map(transform, scientist))
